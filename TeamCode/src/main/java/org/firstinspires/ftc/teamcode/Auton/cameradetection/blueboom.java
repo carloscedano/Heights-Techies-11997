@@ -126,11 +126,14 @@ public class blueboom extends OpMode {
 
                 break;
             case UNFOUND:
+                drive(0,0,0); //(have to change value just added those as a test)
 
             case MIDDLE:
+                drive(0,0.5,0); //(have to change value just added those as a test)
 
                 break;
             case RIGHT:
+                drive(0,0.5,0); //(have to change value just added those as a test)
 
                 break;
         }
