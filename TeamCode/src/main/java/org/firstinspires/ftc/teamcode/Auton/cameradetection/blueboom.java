@@ -31,20 +31,23 @@ public class blueboom extends OpMode {
     private VisionPortal visionPortal;
     private boomutil blueProp;
 
-    DcMotor frontLeftMotor = hardwareMap.dcMotor.get("leftFront"); //code i added just in case if this trial goes wrong
-    DcMotor backLeftMotor = hardwareMap.dcMotor.get("leftBack");
-    DcMotor frontRightMotor = hardwareMap.dcMotor.get("rightFront");
-    DcMotor backRightMotor = hardwareMap.dcMotor.get("rightBack");
-
-
-
+    DcMotor frontLeftMotor;
+    DcMotor backLeftMotor;
+    DcMotor frontRightMotor;
+    DcMotor backRightMotor;
     @Override
     public void init() {
+
+        frontLeftMotor  = hardwareMap.get(DcMotor.class, "leftFront");
+        frontRightMotor  = hardwareMap.get(DcMotor.class, "rightFront");
+        backLeftMotor  = hardwareMap.get(DcMotor.class, "leftBack");
+        backRightMotor  = hardwareMap.get(DcMotor.class, "rightBack");
 
         frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE); //code i added just in case if this trial goes wrong
         backRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         frontLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         backLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+
 
         Scalar lower = new Scalar(100,150,0);
         Scalar upper = new Scalar(140,255,255);
@@ -122,18 +125,18 @@ public class blueboom extends OpMode {
 
         switch (recordedPropPosition) {
             case LEFT:
-                drive(0,0.5,0); //code i added just in case if this trial goes wrong (have to change value just added those as a test)
+                drive(0,0,0); //code i added just in case if this trial goes wrong (have to change value just added those as a test)
 
                 break;
             case UNFOUND:
-                drive(0,0,0); //(have to change value just added those as a test)
+                drive(0,0.5,0); //(have to change value just added those as a test)
 
             case MIDDLE:
-                drive(1,0.5,0); //(have to change value just added those as a test)
+                drive(0,-0.5,0); //(have to change value just added those as a test)
 
                 break;
             case RIGHT:
-                drive(0,1,0); //(have to change value just added those as a test)
+                drive(-0.5,0,0.5); //(have to change value just added those as a test)
 
                 break;
         }

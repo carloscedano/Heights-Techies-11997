@@ -18,13 +18,18 @@ public class redboom extends OpMode {
     private VisionPortal visionPortal;
     private boomutil redProp;
 
-    DcMotor frontLeftMotor = hardwareMap.dcMotor.get("leftFront"); //code i added just in case if this trial goes wrong
-    DcMotor backLeftMotor = hardwareMap.dcMotor.get("leftBack");
-    DcMotor frontRightMotor = hardwareMap.dcMotor.get("rightFront");
-    DcMotor backRightMotor = hardwareMap.dcMotor.get("rightBack");
+    DcMotor frontLeftMotor;
+    DcMotor backLeftMotor;
+    DcMotor frontRightMotor;
+    DcMotor backRightMotor;
 
     @Override
     public void init() {
+
+        frontLeftMotor  = hardwareMap.get(DcMotor.class, "leftFront");
+        frontRightMotor  = hardwareMap.get(DcMotor.class, "rightFront");
+        backLeftMotor  = hardwareMap.get(DcMotor.class, "leftBack");
+        backRightMotor  = hardwareMap.get(DcMotor.class, "rightBack");
 
         frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE); //code i added just in case if this trial goes wrong
         backRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
