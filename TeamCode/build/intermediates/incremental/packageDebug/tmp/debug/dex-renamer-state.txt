@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-#Mon Jan 08 12:03:03 EST 2024
+#Wed Jan 10 17:08:41 EST 2024
 base.0=/Users/carloscedano/Documents/GitHub/Heights-Techies-11997/TeamCode/build/intermediates/dex/debug/mergeExtDexDebug/classes.dex
 base.1=/Users/carloscedano/Documents/GitHub/Heights-Techies-11997/TeamCode/build/intermediates/dex/debug/mergeLibDexDebug/10/classes.dex
 base.10=/Users/carloscedano/Documents/GitHub/Heights-Techies-11997/TeamCode/build/intermediates/dex/debug/mergeProjectDexDebug/15/classes.dex
@@ -13,22 +12,6 @@ base.6=/Users/carloscedano/Documents/GitHub/Heights-Techies-11997/TeamCode/build
 base.7=/Users/carloscedano/Documents/GitHub/Heights-Techies-11997/TeamCode/build/intermediates/dex/debug/mergeProjectDexDebug/12/classes.dex
 base.8=/Users/carloscedano/Documents/GitHub/Heights-Techies-11997/TeamCode/build/intermediates/dex/debug/mergeProjectDexDebug/13/classes.dex
 base.9=/Users/carloscedano/Documents/GitHub/Heights-Techies-11997/TeamCode/build/intermediates/dex/debug/mergeProjectDexDebug/14/classes.dex
-=======
-#Wed Jan 10 11:40:41 EST 2024
-base.0=/Users/whiteaniyah/Documents/GitHub/Heights-Techies-11997/TeamCode/build/intermediates/dex/debug/mergeExtDexDebug/classes.dex
-base.1=/Users/whiteaniyah/Documents/GitHub/Heights-Techies-11997/TeamCode/build/intermediates/dex/debug/mergeLibDexDebug/10/classes.dex
-base.10=/Users/whiteaniyah/Documents/GitHub/Heights-Techies-11997/TeamCode/build/intermediates/dex/debug/mergeProjectDexDebug/15/classes.dex
-base.11=/Users/whiteaniyah/Documents/GitHub/Heights-Techies-11997/TeamCode/build/intermediates/dex/debug/mergeProjectDexDebug/3/classes.dex
-base.12=/Users/whiteaniyah/Documents/GitHub/Heights-Techies-11997/TeamCode/build/intermediates/dex/debug/mergeExtDexDebug/classes2.dex
-base.2=/Users/whiteaniyah/Documents/GitHub/Heights-Techies-11997/TeamCode/build/intermediates/dex/debug/mergeLibDexDebug/11/classes.dex
-base.3=/Users/whiteaniyah/Documents/GitHub/Heights-Techies-11997/TeamCode/build/intermediates/dex/debug/mergeLibDexDebug/8/classes.dex
-base.4=/Users/whiteaniyah/Documents/GitHub/Heights-Techies-11997/TeamCode/build/intermediates/dex/debug/mergeProjectDexDebug/0/classes.dex
-base.5=/Users/whiteaniyah/Documents/GitHub/Heights-Techies-11997/TeamCode/build/intermediates/dex/debug/mergeProjectDexDebug/1/classes.dex
-base.6=/Users/whiteaniyah/Documents/GitHub/Heights-Techies-11997/TeamCode/build/intermediates/dex/debug/mergeProjectDexDebug/11/classes.dex
-base.7=/Users/whiteaniyah/Documents/GitHub/Heights-Techies-11997/TeamCode/build/intermediates/dex/debug/mergeProjectDexDebug/12/classes.dex
-base.8=/Users/whiteaniyah/Documents/GitHub/Heights-Techies-11997/TeamCode/build/intermediates/dex/debug/mergeProjectDexDebug/13/classes.dex
-base.9=/Users/whiteaniyah/Documents/GitHub/Heights-Techies-11997/TeamCode/build/intermediates/dex/debug/mergeProjectDexDebug/14/classes.dex
->>>>>>> 447324720dd35409b3b9598a4a9f750e17312d23
 path.0=classes.dex
 path.1=10/classes.dex
 path.10=15/classes.dex

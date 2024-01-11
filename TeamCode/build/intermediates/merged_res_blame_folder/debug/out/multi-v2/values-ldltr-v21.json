@@ -4,11 +4,7 @@
             "outputFile": "org.firstinspires.ftc.teamcode.TeamCode-mergeDebugResources-17:/values-ldltr-v21/values-ldltr-v21.xml",
             "map": [
                 {
-<<<<<<< HEAD
                     "source": "/Users/carloscedano/.gradle/caches/transforms-3/97f43086dbd253d3e8d9b1f8f32a59eb/transformed/appcompat-1.2.0/res/values-ldltr-v21/values-ldltr-v21.xml",
-=======
-                    "source": "/Users/whiteaniyah/.gradle/caches/transforms-3/30891a14132f501b0723920f18972b1c/transformed/appcompat-1.2.0/res/values-ldltr-v21/values-ldltr-v21.xml",
->>>>>>> 447324720dd35409b3b9598a4a9f750e17312d23
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

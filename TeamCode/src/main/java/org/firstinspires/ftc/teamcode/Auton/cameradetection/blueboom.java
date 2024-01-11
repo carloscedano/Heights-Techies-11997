@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode.Auton.cameradetection;
 //import com.acmerobotics.roadrunner.Pose2d;
 //import com.acmerobotics.roadrunner.Vector2d;
 //import com.acmerobotics.roadrunner.ftc.Actions;
+import static java.lang.Thread.sleep;
+
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -82,7 +84,7 @@ public class blueboom extends OpMode {
             telemetry.addData("Camera", "Waiting");
             telemetry.update();
             while ((visionPortal.getCameraState() != VisionPortal.CameraState.STREAMING)) {
-                Thread.sleep(20);
+                sleep(20);
             }
             telemetry.addData("Camera", "Ready");
             telemetry.update();
@@ -125,35 +127,50 @@ public class blueboom extends OpMode {
 
         switch (recordedPropPosition) {
             case LEFT:
-                drive(0,0,0); //code i added just in case if this trial goes wrong (have to change value just added those as a test)
-
+                drive(0,0.5,0,600); // strafe left
+                drive(-0.5,0,0,700); // forward
+                drive(0.5,0,0,475); // backwards
+                drive(0,-0.5,0,1000); // strafe right
                 break;
             case UNFOUND:
-                drive(0,0.5,0); //(have to change value just added those as a test)
+                drive(-0.5,0,0,750); //(have to change value just added those as a test)
 
             case MIDDLE:
-                drive(0,-0.5,0); //(have to change value just added those as a test)
+                drive(-0.5,0,0,500); //(have to change value just added those as a test)
 
                 break;
             case RIGHT:
-                drive(-0.5,0,0.5); //(have to change value just added those as a test)
+                drive(0,-0.5,0,600);
+                drive(-0.5,0,0,700);
+                drive(0.5,0,0,475);
+                drive(0,-0.5,0,500); //(have to change value just added those as a test)
 
                 break;
         }
     }
 
-    public void drive (double y, double x, double rx) {
-        double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
+    public void drive (double y, double x, double rx, long time) {
+        try {double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
 
-        double frontLeftPower = (y + x + rx) / denominator;
-        double backLeftPower = (y - x + rx) / denominator;
-        double frontRightPower = (y - x - rx) / denominator;
-        double backRightPower = (y + x - rx) / denominator;
+            double frontLeftPower = (y + x - rx) / denominator;
+            double backLeftPower = (y - x + rx) / denominator;
+            double frontRightPower = (y - x + rx) / denominator;
+            double backRightPower = (y + x - rx) / denominator;
 
-        frontLeftMotor.setPower(frontLeftPower);
-        backLeftMotor.setPower(backLeftPower);
-        frontRightMotor.setPower(frontRightPower);
-        backRightMotor.setPower(backRightPower);
+
+            frontLeftMotor.setPower(frontLeftPower);
+            backLeftMotor.setPower(backLeftPower);
+            frontRightMotor.setPower(frontRightPower);
+            backRightMotor.setPower(backRightPower);
+            sleep(time);
+            frontLeftMotor.setPower(0);
+            backLeftMotor.setPower(0);
+            frontRightMotor.setPower(0);
+            backRightMotor.setPower(0);
+
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 
