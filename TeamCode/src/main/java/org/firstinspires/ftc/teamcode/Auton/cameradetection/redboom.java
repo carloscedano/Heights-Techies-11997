@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode.Auton.cameradetection;
 //import com.acmerobotics.roadrunner.Pose2d;
 //import com.acmerobotics.roadrunner.Vector2d;
 //import com.acmerobotics.roadrunner.ftc.Actions;
+import static android.os.SystemClock.sleep;
+
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -77,24 +79,31 @@ public class redboom extends OpMode {
 
         switch (recordedPropPosition) {
             case LEFT:
-                drive(0,0.5,0); //code i added just in case if this trial goes wrong (have to change value just added those as a test)
-
+                drive(0,0.5,0,600); // strafe left
+                drive(-0.5,0,0,700); // backwards
+                drive(0.5,0,0,475); // backwards
+                drive(0,-0.5,0,1000); // strafe right
                 break;
             case UNFOUND:
-                drive(0,0,0); //(have to change value just added those as a test)
+                drive(-0.5,0,0,750); //(have to change value just added those as a test)
 
             case MIDDLE:
-                drive(0,0.5,0); //(have to change value just added those as a test)
+                drive(-0.5,0,0,500); //(have to change value just added those as a test)
 
                 break;
             case RIGHT:
-                drive(0,0.5,0); //(have to change value just added those as a test)
+                drive(0,-0.5,0,600);
+                drive(-0.5,0,0,700);
+                drive(0.5,0,0,475);
+                drive(0,-0.5,0,500); //(have to change value just added those as a test)
 
                 break;
         }
+
+
     }
 
-    public void drive (double y, double x, double rx) {
+    public void drive (double y, double x, double rx, long time) {
         double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
 
         double frontLeftPower = (y + x + rx) / denominator;
@@ -106,7 +115,11 @@ public class redboom extends OpMode {
         backLeftMotor.setPower(backLeftPower);
         frontRightMotor.setPower(frontRightPower);
         backRightMotor.setPower(backRightPower);
-
+        sleep(time);
+        frontLeftMotor.setPower(0);
+        backLeftMotor.setPower(0);
+        frontRightMotor.setPower(0);
+        backRightMotor.setPower(0);
     }
 
     @Override
