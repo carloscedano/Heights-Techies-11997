@@ -3,7 +3,9 @@ package org.firstinspires.ftc.teamcode.Auton.cameradetection;
 //import com.acmerobotics.roadrunner.Pose2d;
 //import com.acmerobotics.roadrunner.Vector2d;
 //import com.acmerobotics.roadrunner.ftc.Actions;
-import static java.lang.Thread.sleep;
+//import static java.lang.langThread.sleep;
+
+import static android.os.SystemClock.sleep;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -128,7 +130,7 @@ public class blueboom extends OpMode {
         switch (recordedPropPosition) {
             case LEFT:
                 drive(0,0.5,0,600); // strafe left
-                drive(-0.5,0,0,700); // forward
+                drive(-0.5,0,0,700); // backwards
                 drive(0.5,0,0,475); // backwards
                 drive(0,-0.5,0,1000); // strafe right
                 break;
@@ -149,29 +151,48 @@ public class blueboom extends OpMode {
         }
     }
 
+//    public void drive (double y, double x, double rx, long time) {
+//        try {double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
+//
+//            double frontLeftPower = (y + x - rx) / denominator;
+//            double backLeftPower = (y - x + rx) / denominator;
+//            double frontRightPower = (y - x + rx) / denominator;
+//            double backRightPower = (y + x - rx) / denominator;
+//
+//
+//            frontLeftMotor.setPower(frontLeftPower);
+//            backLeftMotor.setPower(backLeftPower);
+//            frontRightMotor.setPower(frontRightPower);
+//            backRightMotor.setPower(backRightPower);
+//            SystemClock.sleep(time);
+//            frontLeftMotor.setPower(0);
+//            backLeftMotor.setPower(0);
+//            frontRightMotor.setPower(0);
+//            backRightMotor.setPower(0);
+//
+//        } catch (InterruptedException e) {
+//            throw new RuntimeException(e);
+//        }
+//
+//    }
+
     public void drive (double y, double x, double rx, long time) {
-        try {double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
+        double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
 
-            double frontLeftPower = (y + x - rx) / denominator;
-            double backLeftPower = (y - x + rx) / denominator;
-            double frontRightPower = (y - x + rx) / denominator;
-            double backRightPower = (y + x - rx) / denominator;
+        double frontLeftPower = (y + x + rx) / denominator;
+        double backLeftPower = (y - x + rx) / denominator;
+        double frontRightPower = (y - x - rx) / denominator;
+        double backRightPower = (y + x - rx) / denominator;
 
-
-            frontLeftMotor.setPower(frontLeftPower);
-            backLeftMotor.setPower(backLeftPower);
-            frontRightMotor.setPower(frontRightPower);
-            backRightMotor.setPower(backRightPower);
-            sleep(time);
-            frontLeftMotor.setPower(0);
-            backLeftMotor.setPower(0);
-            frontRightMotor.setPower(0);
-            backRightMotor.setPower(0);
-
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-
+        frontLeftMotor.setPower(frontLeftPower);
+        backLeftMotor.setPower(backLeftPower);
+        frontRightMotor.setPower(frontRightPower);
+        backRightMotor.setPower(backRightPower);
+        sleep(time);
+        frontLeftMotor.setPower(0);
+        backLeftMotor.setPower(0);
+        frontRightMotor.setPower(0);
+        backRightMotor.setPower(0);
     }
 
     @Override
