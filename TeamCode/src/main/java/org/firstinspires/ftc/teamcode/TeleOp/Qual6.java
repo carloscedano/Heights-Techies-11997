@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -19,9 +20,14 @@ public class Qual6 extends LinearOpMode {
 
     // Distance Sensors
     Rev2mDistanceSensor dl;
-
+    Rev2mDistanceSensor dr;
+    DcMotorEx test;
     @Override
     public void runOpMode() throws InterruptedException {
+
+        // test *delete later*
+        test = hardwareMap.get(DcMotorEx.class, "testmotor");
+
         // Declare our motors
         // Make sure your ID's match your configuration
         DcMotor frontLeftMotor = hardwareMap.dcMotor.get("leftFront");
@@ -33,7 +39,8 @@ public class Qual6 extends LinearOpMode {
         DcMotor rightLiftMotor = hardwareMap.dcMotor.get("rightLiftMotor"); //Motor Port 2 / Encoder Port 2 //
 
         // Distance Sensor hwMap
-        dl = hardwareMap.get(Rev2mDistanceSensor.class, "ds");
+        dl = hardwareMap.get(Rev2mDistanceSensor.class, "lds");
+        dr = hardwareMap.get(Rev2mDistanceSensor.class, "rds");
 
         // Servo Port  //
         // Servos
@@ -89,11 +96,26 @@ public class Qual6 extends LinearOpMode {
         if (isStopRequested()) return;
 
         while (opModeIsActive()) {
-            if (dl.getDistance(DistanceUnit.CM) < 6){
+
+            // getting v to solve for t using kinematics *delete later*
+            if (gamepad1.options) {
+                telemetry.addData("velocity:", test.getVelocity());
+                telemetry.update();
+            }
+
+            if (dl.getDistance(DistanceUnit.CM) < 6 && gamepad1.right_trigger == 0) {
                 frontLeftMotor.setPower(-0.5);
                 backLeftMotor.setPower(0.5);
                 frontRightMotor.setPower(0.5);
                 backRightMotor.setPower(-0.5);
+                sleep(500);
+                // Strafe right for .5 seconds
+                // Do kinematics and find out how much traveling per second, find t
+            } else if (dr.getDistance(DistanceUnit.CM) < 6 && gamepad1.left_trigger == 0) {
+                frontLeftMotor.setPower(0.5);
+                backLeftMotor.setPower(-0.5);
+                frontRightMotor.setPower(-0.5);
+                backRightMotor.setPower(0.5);
                 sleep(500);
                 // Strafe left for .5 seconds
                 // Do kinematics and find out how much traveling per second, find t
