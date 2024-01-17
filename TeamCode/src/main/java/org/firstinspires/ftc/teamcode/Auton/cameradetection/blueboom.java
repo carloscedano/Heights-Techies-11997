@@ -3,6 +3,10 @@ package org.firstinspires.ftc.teamcode.Auton.cameradetection;
 //import com.acmerobotics.roadrunner.Pose2d;
 //import com.acmerobotics.roadrunner.Vector2d;
 //import com.acmerobotics.roadrunner.ftc.Actions;
+//import static java.lang.langThread.sleep;
+
+import static android.os.SystemClock.sleep;
+
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -38,6 +42,8 @@ public class blueboom extends OpMode {
     @Override
     public void init() {
 
+        //
+
         frontLeftMotor  = hardwareMap.get(DcMotor.class, "leftFront");
         frontRightMotor  = hardwareMap.get(DcMotor.class, "rightFront");
         backLeftMotor  = hardwareMap.get(DcMotor.class, "leftBack");
@@ -72,6 +78,8 @@ public class blueboom extends OpMode {
         }
     }
 
+    //
+
     private void setManualExposure(int exposureMS, int gain) throws InterruptedException {
 
         if (visionPortal == null) {
@@ -82,7 +90,7 @@ public class blueboom extends OpMode {
             telemetry.addData("Camera", "Waiting");
             telemetry.update();
             while ((visionPortal.getCameraState() != VisionPortal.CameraState.STREAMING)) {
-                Thread.sleep(20);
+                sleep(20);
             }
             telemetry.addData("Camera", "Ready");
             telemetry.update();
@@ -103,6 +111,8 @@ public class blueboom extends OpMode {
 
 
    // @Override
+
+    //Informs user where the team prop is located
     public void init_loop() {
         telemetry.addData("Currently Recorded Position", blueProp.getRecordedPropPosition());
         telemetry.addData("Camera State", visionPortal.getCameraState());
@@ -111,6 +121,8 @@ public class blueboom extends OpMode {
     }
 
     //@Override
+
+    //When
     public void start() {
         if (visionPortal.getCameraState() == VisionPortal.CameraState.STREAMING) {
             visionPortal.stopLiveView();
@@ -123,26 +135,132 @@ public class blueboom extends OpMode {
             recordedPropPosition = boomutil.PropPositions.MIDDLE;
         }
 
+        //Robot moves in
+
         switch (recordedPropPosition) {
             case LEFT:
-                drive(0,0,0); //code i added just in case if this trial goes wrong (have to change value just added those as a test)
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+                drive(0,0,0); //robot doesn't move since team prop isnt found
 
                 break;
             case UNFOUND:
-                drive(0,0.5,0); //(have to change value just added those as a test)
+                drive(0,0.5,0); //robot moves to the left when prop is detected
 
             case MIDDLE:
-                drive(0,-0.5,0); //(have to change value just added those as a test)
+                drive(0,-0.5,0); //robot moves in the middle when prop is detected
 
                 break;
             case RIGHT:
-                drive(-0.5,0,0.5); //(have to change value just added those as a test)
+                drive(-0.5,0,0.5); // robot moves to the right when prop is detected
+=======
+                drive(0,0.5,0,600); // strafe left
+                drive(-0.5,0,0,700); // backwards
+                drive(0.5,0,0,475); // backwards
+                drive(0,-0.5,0,1000); // strafe right
+                break;
+            case UNFOUND:
+                drive(-0.5,0,0,750); //(have to change value just added those as a test)
+
+            case MIDDLE:
+                drive(-0.5,0,0,500); //(have to change value just added those as a test)
+
+                break;
+            case RIGHT:
+=======
+                drive(0,0.5,0,600); // strafe left
+                drive(-0.5,0,0,700); // backwards
+                drive(0.5,0,0,475); // backwards
+                drive(0,-0.5,0,1000); // strafe right
+                break;
+            case UNFOUND:
+                drive(-0.5,0,0,750); //(have to change value just added those as a test)
+
+            case MIDDLE:
+                drive(-0.5,0,0,500); //(have to change value just added those as a test)
+
+                break;
+            case RIGHT:
+>>>>>>> c084bd61f1c70a58701bc073ff55637d62292d52
+=======
+                drive(0,0.5,0,600); // strafe left
+                drive(-0.5,0,0,700); // backwards
+                drive(0.5,0,0,475); // backwards
+                drive(0,-0.5,0,1000); // strafe right
+                break;
+            case UNFOUND:
+                drive(-0.5,0,0,750); //(have to change value just added those as a test)
+
+            case MIDDLE:
+                drive(-0.5,0,0,500); //(have to change value just added those as a test)
+
+                break;
+            case RIGHT:
+>>>>>>> c084bd61f1c70a58701bc073ff55637d62292d52
+                drive(0,-0.5,0,600);
+                drive(-0.5,0,0,700);
+                drive(0.5,0,0,475);
+                drive(0,-0.5,0,500); //(have to change value just added those as a test)
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> c084bd61f1c70a58701bc073ff55637d62292d52
+=======
+>>>>>>> c084bd61f1c70a58701bc073ff55637d62292d52
+=======
+>>>>>>> c084bd61f1c70a58701bc073ff55637d62292d52
 
                 break;
         }
     }
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+
+
     public void drive (double y, double x, double rx) {
+
+        //The math to know how far each motor moves
+
+=======
+=======
+>>>>>>> c084bd61f1c70a58701bc073ff55637d62292d52
+=======
+>>>>>>> c084bd61f1c70a58701bc073ff55637d62292d52
+//    public void drive (double y, double x, double rx, long time) {
+//        try {double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
+//
+//            double frontLeftPower = (y + x - rx) / denominator;
+//            double backLeftPower = (y - x + rx) / denominator;
+//            double frontRightPower = (y - x + rx) / denominator;
+//            double backRightPower = (y + x - rx) / denominator;
+//
+//
+//            frontLeftMotor.setPower(frontLeftPower);
+//            backLeftMotor.setPower(backLeftPower);
+//            frontRightMotor.setPower(frontRightPower);
+//            backRightMotor.setPower(backRightPower);
+//            SystemClock.sleep(time);
+//            frontLeftMotor.setPower(0);
+//            backLeftMotor.setPower(0);
+//            frontRightMotor.setPower(0);
+//            backRightMotor.setPower(0);
+//
+//        } catch (InterruptedException e) {
+//            throw new RuntimeException(e);
+//        }
+//
+//    }
+
+    public void drive (double y, double x, double rx, long time) {
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> c084bd61f1c70a58701bc073ff55637d62292d52
+=======
+>>>>>>> c084bd61f1c70a58701bc073ff55637d62292d52
+=======
+>>>>>>> c084bd61f1c70a58701bc073ff55637d62292d52
         double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
 
         double frontLeftPower = (y + x + rx) / denominator;
@@ -154,7 +272,11 @@ public class blueboom extends OpMode {
         backLeftMotor.setPower(backLeftPower);
         frontRightMotor.setPower(frontRightPower);
         backRightMotor.setPower(backRightPower);
-
+        sleep(time);
+        frontLeftMotor.setPower(0);
+        backLeftMotor.setPower(0);
+        frontRightMotor.setPower(0);
+        backRightMotor.setPower(0);
     }
 
     @Override
