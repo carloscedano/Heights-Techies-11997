@@ -142,6 +142,7 @@ public class blueboom extends OpMode {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                 drive(0,0,0); //robot doesn't move since team prop isnt found
 
                 break;
@@ -198,12 +199,30 @@ public class blueboom extends OpMode {
                 break;
             case RIGHT:
 >>>>>>> c084bd61f1c70a58701bc073ff55637d62292d52
+=======
+                drive(0,0.5,0,600); // strafe left
+                drive(-0.5,0,0,700); // backwards
+                drive(0.5,0,0,475); // backwards
+                drive(0,-0.5,0,1000); // strafe right
+                break;
+            case UNFOUND:
+                drive(-0.5,0,0,750); //(have to change value just added those as a test)
+
+            case MIDDLE:
+                drive(-0.5,0,0,500); //(have to change value just added those as a test)
+
+                break;
+            case RIGHT:
+>>>>>>> c084bd61f1c70a58701bc073ff55637d62292d52
                 drive(0,-0.5,0,600);
                 drive(-0.5,0,0,700);
                 drive(0.5,0,0,475);
                 drive(0,-0.5,0,500); //(have to change value just added those as a test)
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> c084bd61f1c70a58701bc073ff55637d62292d52
+=======
 >>>>>>> c084bd61f1c70a58701bc073ff55637d62292d52
 =======
 >>>>>>> c084bd61f1c70a58701bc073ff55637d62292d52
@@ -217,6 +236,7 @@ public class blueboom extends OpMode {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 
     public void drive (double y, double x, double rx) {
@@ -224,6 +244,8 @@ public class blueboom extends OpMode {
         //The math to know how far each motor moves
 
 =======
+=======
+>>>>>>> c084bd61f1c70a58701bc073ff55637d62292d52
 =======
 >>>>>>> c084bd61f1c70a58701bc073ff55637d62292d52
 =======
@@ -256,6 +278,9 @@ public class blueboom extends OpMode {
     public void drive (double y, double x, double rx, long time) {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> c084bd61f1c70a58701bc073ff55637d62292d52
+=======
 >>>>>>> c084bd61f1c70a58701bc073ff55637d62292d52
 =======
 >>>>>>> c084bd61f1c70a58701bc073ff55637d62292d52
