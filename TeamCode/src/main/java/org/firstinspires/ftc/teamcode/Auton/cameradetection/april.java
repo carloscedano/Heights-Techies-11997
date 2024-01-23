@@ -66,36 +66,44 @@ public class april extends LinearOpMode {
         frontLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         backLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
+        frontLeftMotor  = hardwareMap.get(DcMotor.class, "leftFront");
+        frontRightMotor  = hardwareMap.get(DcMotor.class, "rightFront");
+        backLeftMotor  = hardwareMap.get(DcMotor.class, "leftBack");
+        backRightMotor  = hardwareMap.get(DcMotor.class, "rightBack");
+
+        frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE); //code i added just in case if this trial goes wrong
+        backRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        frontLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        backLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+
+
+        Scalar lower = new Scalar(100,150,0);
+        Scalar upper = new Scalar(140,255,255);
+        double minArea = 100;
+
+        blueProp = new boomutil(
+                lower,
+                upper,
+                () -> minArea,
+                () -> 213,
+                () -> 426
+        );
+        visionPortalodo = new VisionPortal.Builder()
+                .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
+                .addProcessor(blueProp)
+                .build();
+
+        try {
+            setManualExposure(6, 250);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
         // camera looking for april tag etc
 
         waitForStart();
 
         while (opModeIsActive()) {
-
-            Scalar lower = new Scalar(100, 150, 0);
-            Scalar upper = new Scalar(140, 255, 255);
-            double minArea = 100;
-
-            blueProp = new boomutil(
-                    lower,
-                    upper,
-                    () -> minArea,
-                    () -> 213,
-                    () -> 426
-            );
-            visionPortalodo = new VisionPortal.Builder()
-                    .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
-                    .addProcessor(blueProp)
-                    .build();
-
-            try {
-                setManualExposure(6, 250);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-
-            while (!isStarted()) {
-
                 if (visionPortalodo.getCameraState() == VisionPortal.CameraState.STREAMING) {
                     visionPortalodo.stopLiveView();
                     visionPortalodo.stopStreaming();
@@ -109,28 +117,32 @@ public class april extends LinearOpMode {
 
                 switch (recordedPropPosition) {
                     case LEFT:
-                        drive(0, 0.5, 0, 600); // strafe left
-                        drive(-0.5, 0, 0, 700); // backwards
-                        drive(0.5, 0, 0, 475); // backwards
-                        drive(0, -0.5, 0, 1000); // strafe right
+                        telemetry.addLine("I see LEFT");
+//                        drive(0, 0.5, 0, 600); // strafe left
+//                        drive(-0.5, 0, 0, 700); // backwards
+//                        drive(0.5, 0, 0, 475); // backwards
+//                        drive(0, -0.5, 0, 1000); // strafe right
                         visionPortalodo.stopStreaming();
                         visionPortalodo.close();
                         break;
                     case UNFOUND:
-                        drive(-0.5, 0, 0, 750); //(have to change value just added those as a test)
+                        telemetry.addLine("I see UNFOUND");
+//                        drive(-0.5, 0, 0, 750); //(have to change value just added those as a test)
                         visionPortalodo.stopStreaming();
                         visionPortalodo.close();
                         break;
                     case MIDDLE:
-                        drive(-0.5, 0, 0, 500); //(have to change value just added those as a test)
+                        telemetry.addLine("I see MIDDLE");
+//                        drive(-0.5, 0, 0, 500); //(have to change value just added those as a test)
                         visionPortalodo.stopStreaming();
                         visionPortalodo.close();
                         break;
                     case RIGHT:
-                        drive(0, -0.5, 0, 600);
-                        drive(-0.5, 0, 0, 700);
-                        drive(0.5, 0, 0, 475);
-                        drive(0, -0.5, 0, 500); //(have to change value just added those as a test)
+                        telemetry.addLine("I see RIGHT");
+//                        drive(0, -0.5, 0, 600);
+//                        drive(-0.5, 0, 0, 700);
+//                        drive(0.5, 0, 0, 475);
+//                        drive(0, -0.5, 0, 500); //(have to change value just added those as a test)
                         visionPortalodo.stopStreaming();
                         visionPortalodo.close();
                         break;
@@ -151,6 +163,7 @@ public class april extends LinearOpMode {
                     //  Check to see if we want to track towards this tag.
                     if (detection.id == DESIRED_TAG_ID) {
                         // Yes, we want to use this tag.
+                        telemetry.addLine("I see TAG");
                         targetFound = true;
                         desiredTag = detection;
                         distance = desiredTag.ftcPose.range - DESIRED_DISTANCE;
@@ -167,16 +180,17 @@ public class april extends LinearOpMode {
 
             // drive until distance is less than 1
             if (distance > 3){
-                Drive(0.5,0,0);
+                telemetry.addLine("I am on TAG");
+//                Drive(0.5,0,0);
             } else {
-                Drive(0,0,0);
+                telemetry.addLine("I see no TAG");
+//                Drive(0,0,0);
             }
             telemetry.addData("Currently Recorded Position", blueProp.getRecordedPropPosition());
             telemetry.addData("Camera State", visionPortal.getCameraState());
             telemetry.addData("Currently Detected Mass Center", "x: " + blueProp.getLargestContourX() + ", y: " + blueProp.getLargestContourY());
             telemetry.addData("Currently Detected Mass Area", blueProp.getLargestContourArea());
             telemetry.update();
-        }
     }
 
     /**
