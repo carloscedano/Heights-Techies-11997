@@ -77,4 +77,9 @@ public class FCQual6 extends LinearOpMode {
             backRightMotor.setPower(backRightPower);
         }
     }
+    public void servoangle(int angle) {
+        double ppa = 1/270;
+        double pos = ppa * angle;
+//        servo.setPosititon(pos);
+    }
 }
