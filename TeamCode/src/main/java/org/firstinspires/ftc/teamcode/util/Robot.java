@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.util;
 
 import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -66,6 +67,7 @@ public class Robot {
         leftVacuum = ht.hardwareMap.get(CRServo.class,"leftVacuum"); // Servo Port 3 //
 
         // DIRECTION & ENCODERS
+
         rightPinch.setDirection(Servo.Direction.REVERSE);
         rightPivot.setDirection(Servo.Direction.REVERSE);
         rightVacuum.setDirection(CRServo.Direction.REVERSE);
@@ -326,5 +328,36 @@ public class Robot {
             ht.telemetry.update();
         }
 
-        // Make More Methods For Separate Actions etc.
-}
+        // INDEPENDENT
+        public void intake () {
+
+        ht.telemetry.addLine("Intaking...");
+        ht.telemetry.update();
+
+        if (ht.gamepad1.a) {
+            intakeMotor.setPower(1);
+        } else if (ht.gamepad1.y) {
+            intakeMotor.setPower(-0.5);
+        } else {
+            intakeMotor.setPower(0);
+        }
+        }
+
+        public void outtake () {
+
+        ht.telemetry.addLine("Outtaking...");
+        ht.telemetry.update();
+
+        if (ht.gamepad1.x){
+            rightPinch.setPosition(0.2);
+            leftPinch.setPosition(0.2);
+        } else {
+            rightPinch.setPosition(0.3);
+            leftPinch.setPosition(0.3);
+        }
+        }
+
+        public void test () {
+        // INSERT CODE TO TEST HERE!
+        }
+    }
