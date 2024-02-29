@@ -335,9 +335,9 @@ public class Robot {
         ht.telemetry.update();
 
         if (ht.gamepad1.a) {
-            intakeMotor.setPower(1);
+            intakeMotor.setPower(-1);
         } else if (ht.gamepad1.y) {
-            intakeMotor.setPower(-0.5);
+            intakeMotor.setPower(0.5);
         } else {
             intakeMotor.setPower(0);
         }
@@ -357,7 +357,16 @@ public class Robot {
         }
         }
 
-        public void test () {
-        // INSERT CODE TO TEST HERE!
+        public void angletest (int angle) {
+            double anglepos = 1/270;
+            rightPinch.setPosition(anglepos*angle);
+        }
+
+        public void servo (){
+        if (ht.gamepad1.a){
+            angletest(90);
+        } else if (ht.gamepad1.y){
+            angletest(180);
+        }
         }
     }
