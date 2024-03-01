@@ -75,6 +75,7 @@ public class close_red extends OpMode {
                 robot.turn(180);
                 robot.halfbackward(0.5);
                 robot.score();
+                robot.retract();
                 robot.halfforward(0.25);
                 robot.strafe(0.5,1,-1);
                 robot.halfbackward(0.25);
@@ -91,6 +92,7 @@ public class close_red extends OpMode {
                 robot.turn(180);
                 robot.halfbackward(0.5);
                 robot.score();
+                robot.retract();
                 robot.halfforward(0.25);
                 robot.strafe(0.5,1,-1);
                 robot.halfbackward(0.25);
@@ -105,6 +107,7 @@ public class close_red extends OpMode {
                 robot.strafe(0.5,3,-1);
                 robot.backward(0.25,1);
                 robot.score();
+                robot.retract();
                 robot.halfforward(0.25);
                 robot.strafe(0.5,1,-1);
                 robot.halfbackward(0.25);
@@ -120,6 +123,7 @@ public class close_red extends OpMode {
                 robot.strafehalf(0.5,-1);
                 robot.halfbackward(0.25);
                 robot.score();
+                robot.retract();
                 robot.halfforward(0.25);
                 robot.strafe(0.5,1,-1);
                 robot.halfbackward(0.25);

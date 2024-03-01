@@ -391,10 +391,7 @@ public class Robot {
             // INSERT CODE TO TEST HERE!
         }
 
-        public void autonpinch() {
-            caclaw.setPosition(1);
-        }
-
+        public void autonpinch() { caclaw.setPosition(1); }
         public void autonpinchout() {
             caclaw.setPosition(0.5);
         }
@@ -402,7 +399,10 @@ public class Robot {
         // ENCODER MOVEMENT DO NOT TOUCH!
 
         public void score() {
-        // COPY & PASTE Angel's Code Here!
+            // COPY & PASTE Angel's Code Here!
+        }
+        public void retract() {
+            // COPY & PASTE Angel's Code Here!
         }
         public void forward(double pw, int num_tiles) {
             int CPR = 385;

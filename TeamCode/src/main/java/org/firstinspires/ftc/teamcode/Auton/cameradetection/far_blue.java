@@ -75,6 +75,7 @@ public class far_blue extends OpMode {
                 robot.backward(0.5,2);
                 robot.halfbackward(0.25);
                 robot.score();
+                robot.retract();
                 robot.halfforward(0.25);
                 robot.strafe(0.5,1,-1);
                 robot.halfbackward(0.25);
@@ -90,6 +91,7 @@ public class far_blue extends OpMode {
                 robot.backward(0.5,2);
                 robot.halfbackward(0.25);
                 robot.score();
+                robot.retract();
                 robot.halfforward(0.25);
                 robot.strafe(0.5,1,-1);
                 robot.halfbackward(0.25);
@@ -107,6 +109,7 @@ public class far_blue extends OpMode {
                 robot.backward(0.5,1);
                 robot.halfbackward(0.25);
                 robot.score();
+                robot.retract();
                 robot.halfforward(0.25);
                 robot.strafe(0.5,1,-1);
                 robot.halfbackward(0.25);
@@ -123,6 +126,7 @@ public class far_blue extends OpMode {
                 robot.turn(90);
                 robot.halfbackward(0.25);
                 robot.score();
+                robot.retract();
                 robot.halfforward(0.25);
                 robot.strafe(0.5,1,-1);
                 robot.halfbackward(0.25);
