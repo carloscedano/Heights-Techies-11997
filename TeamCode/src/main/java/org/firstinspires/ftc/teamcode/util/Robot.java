@@ -31,6 +31,7 @@ public class Robot {
     private Servo leftIntake = null;
     private CRServo rightVacuum = null;
     private CRServo leftVacuum = null;
+    private Servo caclaw = null;
     Rev2mDistanceSensor leftSensor;
     Rev2mDistanceSensor rightSensor;
     RevBlinkinLedDriver blinkinLedDriver;
@@ -66,6 +67,7 @@ public class Robot {
         outtakeWrist = ht.hardwareMap.get(Servo.class,"rot"); // (EX) Servo Port 0 //
         rightPinch = ht.hardwareMap.get(Servo.class,"rightPinch"); // (EX) Servo Port 1 //
         leftPinch = ht.hardwareMap.get(Servo.class,"leftPinch"); // (EX) Servo Port 2 //
+        caclaw = ht.hardwareMap.get(Servo.class,"CACLAW"); // Servo Port 3 //
 
         // INTAKE
 
@@ -389,7 +391,19 @@ public class Robot {
             // INSERT CODE TO TEST HERE!
         }
 
+        public void autonpinch() {
+            caclaw.setPosition(1);
+        }
+
+        public void autonpinchout() {
+            caclaw.setPosition(0.5);
+        }
+
         // ENCODER MOVEMENT DO NOT TOUCH!
+
+        public void score() {
+        // COPY & PASTE Angel's Code Here!
+        }
         public void forward(double pw, int num_tiles) {
             int CPR = 385;
             int diameter = 96; // Replace with your wheel/spool's diameter
