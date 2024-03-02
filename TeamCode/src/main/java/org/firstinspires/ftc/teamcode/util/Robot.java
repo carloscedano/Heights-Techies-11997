@@ -92,6 +92,7 @@ public class Robot {
         rightPinch.setDirection(Servo.Direction.REVERSE);
         rightIntake.setDirection(Servo.Direction.REVERSE);
         rightVacuum.setDirection(CRServo.Direction.REVERSE);
+
         outtakeWrist.setDirection(Servo.Direction.REVERSE);
         outtakeRotate.setDirection(Servo.Direction.REVERSE);
 //        frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -366,10 +367,10 @@ public class Robot {
             ht.telemetry.addLine("Intaking...");
             ht.telemetry.update();
 
-            if (ht.gamepad1.a) {
-                intakeMotor.setPower(1);
-            } else if (ht.gamepad1.y) {
-                intakeMotor.setPower(-0.5);
+            if (ht.gamepad1.right_trigger > 0) {
+                intakeMotor.setPower(0.5);
+            } else if (ht.gamepad1.left_trigger > 0) {
+                intakeMotor.setPower(-1);
             } else {
                 intakeMotor.setPower(0);
             }
@@ -389,18 +390,38 @@ public class Robot {
             }
         }
 
+        // (STRAFE) NEGATIVE DIRECTION ==
+        public void autontest () {
+            forward(0.5,1);
+        }
         public void test () {
-            if (ht.gamepad2.x){
-                outtakeRotate.setPosition(0.35);
-                outtakeWrist.setPosition(0.05);
-//                rightPinch.setPosition(0.2);
-//                leftPinch.setPosition(0.2);
 
-            } else {
-                outtakeRotate.setPosition(0);
-//                rightPinch.setPosition(0.3);
-//                leftPinch.setPosition(0.3);
-                outtakeWrist.setPosition(0.789);
+        // TEST LATER
+
+            if (ht.gamepad1.right_trigger != 0) {
+                leftIntake.setPosition(0.37);
+                rightIntake.setPosition(0.37);
+            } else if (ht.gamepad2.dpad_down) { // 2 PIXEL STACK //
+                leftIntake.setPosition(0.3);
+                rightIntake.setPosition(0.3);
+                leftVacuum.setPower(1);
+                rightVacuum.setPower(1);
+            } else if (ht.gamepad2.dpad_right) { // 3 PIXEL STACK //
+                leftIntake.setPosition(Math.abs(0.33 - (0.33 * 1.5)));
+                rightIntake.setPosition(Math.abs(0.33 - (0.33 * 1.5)));
+                leftVacuum.setPower(1);
+                rightVacuum.setPower(1);
+            } else if (ht.gamepad2.dpad_left) { // 4TH PIXEL STACK //
+                leftIntake.setPosition(Math.abs(-0.33 - (0.33 * 2)));
+                rightIntake.setPosition(Math.abs(-0.33 - (0.33 * 2)));
+                leftVacuum.setPower(1);
+                rightVacuum.setPower(1);
+            } else if (ht.gamepad2.dpad_up) { // 5TH PIXEL STACK //
+                leftIntake.setPosition(Math.abs(0.33 - (0.33 * 2.5)));
+                rightIntake.setPosition(Math.abs(0.33 - (0.33 * 2.5)));
+                leftVacuum.setPower(1);
+                rightVacuum.setPower(1);
+                intakeMotor.setPower(1);
             }
         }
 
@@ -412,90 +433,122 @@ public class Robot {
         // ENCODER MOVEMENT DO NOT TOUCH!
 
         public void score() {
-            int bruh = 0;
-            int targetTicks = -277;  // Adjust this value based on the desired initial movement
-            int boom = 1;
+
 // COPY & PASTE Angel's Code Here!
             if (ht.gamepad2.y) {
-                rightPinch.setPosition(0.3);
-                leftPinch.setPosition(0.3);
 
-                try {
-                    Thread.sleep(650);  // Adjust the delay duration (in milliseconds)
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                    rightPinch.setPosition(0.3);
+                    leftPinch.setPosition(0.3);
 
-                armMotor.setTargetPosition(-472);
-                armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                armMotor.setPower(0.3);
+                    if (ht.gamepad2.left_bumper) {
+                        rightPinch.setPosition(0.2);
+                        leftPinch.setPosition(0.2);
+                    } else if (ht.gamepad2.right_trigger > 0) {
+                        rightPinch.setPosition(0.2);
+                    } else if (ht.gamepad2.left_trigger > 0) {
+                        leftPinch.setPosition(0.2);
+                    } else {
+                        rightPinch.setPosition(0.3);
+                        leftPinch.setPosition(0.3);
+                    }
 
-                try {
-                    Thread.sleep(650);  // Adjust the delay duration (in milliseconds)
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                    try {
+                        Thread.sleep(650);  // Adjust the delay duration (in milliseconds)
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
 
-                outtakeRotate.setPosition(0.35);
-                outtakeWrist.setPosition(0.07);
-            } else if (ht.gamepad2.b){
+                    armMotor.setTargetPosition(-472);
+                    armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    armMotor.setPower(1);
+
+                    // Wait for the motor to reach the target position
+                    while (armMotor.isBusy()) {
+                        ht.idle();
+                    }
+
+                    // Adjust servo positions after the motor reaches the target position
+                    outtakeRotate.setPosition(0.35);
+                    outtakeWrist.setPosition(0.05);
+
+                    if (ht.gamepad2.right_bumper) {
+                        outtakeRotate.setPosition(0);
+                    }
+
+            }
+//            else if (ht.gamepad2.b) {
+//                outtakeRotate.setPosition(0);
+//                outtakeWrist.setPosition(0.789);
+//                rightPinch.setPosition(0.2);
+//                leftPinch.setPosition(0.2);
+//                try {
+//                    Thread.sleep(650);  // Adjust the delay duration (in milliseconds)
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//                armMotor.setTargetPosition(0);
+//                armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//                armMotor.setPower(0.3);
+//            }
+//            } else if (ht.gamepad2.x){
+//                outtakeRotate.setPosition(0);
+//                outtakeWrist.setPosition(0.5);
+//            } else if (ht.gamepad2.a){
+//                rightPinch.setPosition(0.3);
+//                leftPinch.setPosition(0.3);
+//                outtakeRotate.setPosition(0);
+//                outtakeWrist.setPosition(0.8);
+//            } if (bruh == 1) {
+//                armMotor.setTargetPosition(armMotor.getCurrentPosition());
+//                armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//                armMotor.setPower(0.2);
+//                outtakeRotate.setPosition(0.35);
+//                outtakeWrist.setPosition(0.07);
+//                rightPinch.setPosition(0.3);
+//                leftPinch.setPosition(0.3);
+//                try {
+//                    Thread.sleep(15);  // Adjust the delay duration (in milliseconds)
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//                // Add any additional actions or adjustments here
+//            } if (boom == 1){
+//                rightPinch.setPosition(0.3);
+//                leftPinch.setPosition(0.3);
+//            } if (bruh == 1) {
+//                armMotor.setTargetPosition(armMotor.getCurrentPosition());
+//                armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//                armMotor.setPower(0.2);
+//                outtakeRotate.setPosition(0.35);
+//                outtakeWrist.setPosition(0.07);
+//                rightPinch.setPosition(0.3);
+//                leftPinch.setPosition(0.3);
+//                try {
+//                    Thread.sleep(15);  // Adjust the delay duration (in milliseconds)
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//                // Add any additional actions or adjustments here
+//            }
+            else {
                 outtakeRotate.setPosition(0);
                 outtakeWrist.setPosition(0.789);
                 rightPinch.setPosition(0.2);
                 leftPinch.setPosition(0.2);
+
                 try {
-                    Thread.sleep(650);  // Adjust the delay duration (in milliseconds)
+                    Thread.sleep(1000);  // Adjust the delay duration (in milliseconds)
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+
                 armMotor.setTargetPosition(0);
                 armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 armMotor.setPower(0.3);
-            } else if (ht.gamepad2.x){
-                outtakeRotate.setPosition(0);
-                outtakeWrist.setPosition(0.5);
-            } else if (ht.gamepad2.a){
-                rightPinch.setPosition(0.3);
-                leftPinch.setPosition(0.3);
-                outtakeRotate.setPosition(0);
-                outtakeWrist.setPosition(0.8);
-            } if (bruh == 1) {
-                armMotor.setTargetPosition(armMotor.getCurrentPosition());
-                armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                armMotor.setPower(0.2);
-                outtakeRotate.setPosition(0.35);
-                outtakeWrist.setPosition(0.07);
-                rightPinch.setPosition(0.3);
-                leftPinch.setPosition(0.3);
-                try {
-                    Thread.sleep(15);  // Adjust the delay duration (in milliseconds)
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                // Add any additional actions or adjustments here
-            } if (boom == 1){
-                rightPinch.setPosition(0.3);
-                leftPinch.setPosition(0.3);
-            } if (bruh == 1) {
-                armMotor.setTargetPosition(armMotor.getCurrentPosition());
-                armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                armMotor.setPower(0.2);
-                outtakeRotate.setPosition(0.35);
-                outtakeWrist.setPosition(0.07);
-                rightPinch.setPosition(0.3);
-                leftPinch.setPosition(0.3);
-                try {
-                    Thread.sleep(15);  // Adjust the delay duration (in milliseconds)
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                // Add any additional actions or adjustments here
-            } else {
-                outtakeRotate.setPosition(0);
-                outtakeWrist.setPosition(0.789);
             }
-
         }
+
+
         public void retract() {
             // COPY & PASTE Angel's Code Here!
         }
