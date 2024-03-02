@@ -34,8 +34,8 @@ public class Robot {
     private Servo caclaw = null;
     Rev2mDistanceSensor leftSensor;
     Rev2mDistanceSensor rightSensor;
-    RevBlinkinLedDriver blinkinLedDriver;
-    RevBlinkinLedDriver.BlinkinPattern pattern;
+//    RevBlinkinLedDriver blinkinLedDriver;
+//    RevBlinkinLedDriver.BlinkinPattern pattern;
     public Robot(LinearOpMode opmode) { ht = opmode; }
 
     /**
@@ -63,8 +63,8 @@ public class Robot {
         // Servos //
 
         // SCORING
-        outtakeRotate = ht.hardwareMap.get(Servo.class,"svl"); // (EX) Servo Port 0 //
-        outtakeWrist = ht.hardwareMap.get(Servo.class,"rot"); // (EX) Servo Port 0 //
+        outtakeRotate = ht.hardwareMap.get(Servo.class,"armSwvl"); // (EX) Servo Port 0 //
+        outtakeWrist = ht.hardwareMap.get(Servo.class,"armPivot"); // (EX) Servo Port 0 //
         rightPinch = ht.hardwareMap.get(Servo.class,"rightPinch"); // (EX) Servo Port 1 //
         leftPinch = ht.hardwareMap.get(Servo.class,"leftPinch"); // (EX) Servo Port 2 //
         caclaw = ht.hardwareMap.get(Servo.class,"CACLAW"); // Servo Port 3 //
@@ -84,15 +84,16 @@ public class Robot {
 
         // LED STRIP
 
-        blinkinLedDriver = ht.hardwareMap.get(RevBlinkinLedDriver.class, "blinkin");
-        pattern = RevBlinkinLedDriver.BlinkinPattern.VIOLET;
+//        blinkinLedDriver = ht.hardwareMap.get(RevBlinkinLedDriver.class, "blinkin");
+//        pattern = RevBlinkinLedDriver.BlinkinPattern.VIOLET;
 
         // DIRECTION & ENCODERS
 
         rightPinch.setDirection(Servo.Direction.REVERSE);
         rightIntake.setDirection(Servo.Direction.REVERSE);
         rightVacuum.setDirection(CRServo.Direction.REVERSE);
-
+        outtakeWrist.setDirection(Servo.Direction.REVERSE);
+        outtakeRotate.setDirection(Servo.Direction.REVERSE);
 //        frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 //        backRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         frontLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -127,11 +128,12 @@ public class Robot {
         ht.telemetry.addLine("Hardware Initialized");
         ht.telemetry.addLine("LETS DO THIS!");
         ht.telemetry.addLine("WE GOT THIS!");
+        ht.telemetry.addData("ticks", armMotor.getCurrentPosition());
         ht.telemetry.update();
     }
     public void drive () {
 
-        blinkinLedDriver.setPattern(pattern);
+//        blinkinLedDriver.setPattern(pattern);
 
         int motorPower;
 
@@ -365,9 +367,9 @@ public class Robot {
             ht.telemetry.update();
 
             if (ht.gamepad1.a) {
-                intakeMotor.setPower(-1);
+                intakeMotor.setPower(1);
             } else if (ht.gamepad1.y) {
-                intakeMotor.setPower(0.5);
+                intakeMotor.setPower(-0.5);
             } else {
                 intakeMotor.setPower(0);
             }
@@ -388,7 +390,18 @@ public class Robot {
         }
 
         public void test () {
-            // INSERT CODE TO TEST HERE!
+            if (ht.gamepad2.x){
+                outtakeRotate.setPosition(0.35);
+                outtakeWrist.setPosition(0.05);
+//                rightPinch.setPosition(0.2);
+//                leftPinch.setPosition(0.2);
+
+            } else {
+                outtakeRotate.setPosition(0);
+//                rightPinch.setPosition(0.3);
+//                leftPinch.setPosition(0.3);
+                outtakeWrist.setPosition(0.789);
+            }
         }
 
         public void autonpinch() { caclaw.setPosition(1); }
@@ -399,7 +412,89 @@ public class Robot {
         // ENCODER MOVEMENT DO NOT TOUCH!
 
         public void score() {
-            // COPY & PASTE Angel's Code Here!
+            int bruh = 0;
+            int targetTicks = -277;  // Adjust this value based on the desired initial movement
+            int boom = 1;
+// COPY & PASTE Angel's Code Here!
+            if (ht.gamepad2.y) {
+                rightPinch.setPosition(0.3);
+                leftPinch.setPosition(0.3);
+
+                try {
+                    Thread.sleep(650);  // Adjust the delay duration (in milliseconds)
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                armMotor.setTargetPosition(-472);
+                armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                armMotor.setPower(0.3);
+
+                try {
+                    Thread.sleep(650);  // Adjust the delay duration (in milliseconds)
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                outtakeRotate.setPosition(0.35);
+                outtakeWrist.setPosition(0.07);
+            } else if (ht.gamepad2.b){
+                outtakeRotate.setPosition(0);
+                outtakeWrist.setPosition(0.789);
+                rightPinch.setPosition(0.2);
+                leftPinch.setPosition(0.2);
+                try {
+                    Thread.sleep(650);  // Adjust the delay duration (in milliseconds)
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                armMotor.setTargetPosition(0);
+                armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                armMotor.setPower(0.3);
+            } else if (ht.gamepad2.x){
+                outtakeRotate.setPosition(0);
+                outtakeWrist.setPosition(0.5);
+            } else if (ht.gamepad2.a){
+                rightPinch.setPosition(0.3);
+                leftPinch.setPosition(0.3);
+                outtakeRotate.setPosition(0);
+                outtakeWrist.setPosition(0.8);
+            } if (bruh == 1) {
+                armMotor.setTargetPosition(armMotor.getCurrentPosition());
+                armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                armMotor.setPower(0.2);
+                outtakeRotate.setPosition(0.35);
+                outtakeWrist.setPosition(0.07);
+                rightPinch.setPosition(0.3);
+                leftPinch.setPosition(0.3);
+                try {
+                    Thread.sleep(15);  // Adjust the delay duration (in milliseconds)
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                // Add any additional actions or adjustments here
+            } if (boom == 1){
+                rightPinch.setPosition(0.3);
+                leftPinch.setPosition(0.3);
+            } if (bruh == 1) {
+                armMotor.setTargetPosition(armMotor.getCurrentPosition());
+                armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                armMotor.setPower(0.2);
+                outtakeRotate.setPosition(0.35);
+                outtakeWrist.setPosition(0.07);
+                rightPinch.setPosition(0.3);
+                leftPinch.setPosition(0.3);
+                try {
+                    Thread.sleep(15);  // Adjust the delay duration (in milliseconds)
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                // Add any additional actions or adjustments here
+            } else {
+                outtakeRotate.setPosition(0);
+                outtakeWrist.setPosition(0.789);
+            }
+
         }
         public void retract() {
             // COPY & PASTE Angel's Code Here!

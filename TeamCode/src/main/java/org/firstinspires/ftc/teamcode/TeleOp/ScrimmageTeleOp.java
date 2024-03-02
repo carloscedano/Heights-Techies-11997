@@ -16,7 +16,7 @@ public class ScrimmageTeleOp extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
-            robot.drive();
+            robot.score();
             robot.intake();
         }
     }
