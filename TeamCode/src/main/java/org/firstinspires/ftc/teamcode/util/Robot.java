@@ -97,8 +97,8 @@ public class Robot {
         outtakeRotate.setDirection(Servo.Direction.REVERSE);
 //        frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 //        backRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        frontLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         backLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        frontLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         rightLift.setDirection(DcMotor.Direction.REVERSE);
         intakeMotor.setDirection(DcMotor.Direction.REVERSE);
 
@@ -136,48 +136,48 @@ public class Robot {
 
 //        blinkinLedDriver.setPattern(pattern);
 
-        int motorPower;
+        double motorPower;
 
         if (ht.gamepad1.left_trigger != 0) {
             motorPower = 1;
 
-        } else if (ht.gamepad1.left_bumper) {
+        } else if (ht.gamepad1.a) {
             motorPower = 5;
 
         } else {
             motorPower = 2;
 
         }
+//
+//        if (leftSensor.getDistance(DistanceUnit.CM) < 6 && ht.gamepad1.right_trigger == 0) {
+//
+//            strafe(0.5,1,1);
+//
+//        } else if (rightSensor.getDistance(DistanceUnit.CM) < 6 && ht.gamepad1.left_trigger == 0) {
+//
+//            strafe(0.5,1,-1);
+//
+//        } else {
 
-        if (leftSensor.getDistance(DistanceUnit.CM) < 6 && ht.gamepad1.right_trigger == 0) {
+                double y = -ht.gamepad1.left_stick_y; // Remember, Y stick value is reversed
+                double x = ht.gamepad1.left_stick_x * 1.1; // Counteract imperfect strafing
+                double rx = ht.gamepad1.right_stick_x;
 
-            strafe(0.5,1,1);
+                // Denominator is the largest motor power (absolute value) or 1
+                // This ensures all the powers maintain the same ratio,
+                // but only if at least one is out of the range [-1, 1]
+                double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), motorPower);
+                double frontLeftPower = (y - x + rx) / denominator;
+                double backLeftPower = (y + x + rx) / denominator;
+                double frontRightPower = (y - x - rx) / denominator;
+                double backRightPower = (y + x - rx) / denominator;
 
-        } else if (rightSensor.getDistance(DistanceUnit.CM) < 6 && ht.gamepad1.left_trigger == 0) {
+                frontLeftMotor.setPower(frontLeftPower);
+                backLeftMotor.setPower(backLeftPower);
+                frontRightMotor.setPower(frontRightPower);
+                backRightMotor.setPower(backRightPower);
 
-            strafe(0.5,1,-1);
 
-        } else {
-
-            double y = -ht.gamepad1.left_stick_y;
-            double x = ht.gamepad1.left_stick_x * 1.1;
-            double rx = ht.gamepad1.right_stick_x;
-
-            // Denominator is the largest motor power (absolute value) or 1
-            // This ensures all the powers maintain the same ratio,
-            // but only if at least one is out of the range [-1, 1]
-            double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), motorPower);
-            double frontLeftPower = (y + x + rx) / denominator;
-            double backLeftPower = (y - x + rx) / denominator;
-            double frontRightPower = (y - x - rx) / denominator;
-            double backRightPower = (y + x - rx) / denominator;
-
-            frontLeftMotor.setPower(frontLeftPower);
-            backLeftMotor.setPower(backLeftPower);
-            frontRightMotor.setPower(frontRightPower);
-            backRightMotor.setPower(backRightPower);
-
-        }
     }
 
         public void gameplay () {
@@ -209,52 +209,53 @@ public class Robot {
             /// INTAKE ///
 
             // VACUUM UP AND DOWN //
-
-            if (ht.gamepad1.right_trigger != 0) {
-                leftIntake.setPosition(0.37);
-                rightIntake.setPosition(0.37);
-                intakeMotor.setPower(1);
-                leftPinch.setPosition(0.3);
-                rightPinch.setPosition(0.3);
-            } else if (ht.gamepad2.dpad_down) { // 2 PIXEL STACK //
-                leftIntake.setPosition(0.33);
-                rightIntake.setPosition(0.33);
-                leftVacuum.setPower(1);
-                rightVacuum.setPower(1);
-                intakeMotor.setPower(1);
-                leftPinch.setPosition(0.3);
-                rightPinch.setPosition(0.3);
-            } else if (ht.gamepad2.dpad_right) { // 3 PIXEL STACK //
-                leftIntake.setPosition(Math.abs(0.33 - (0.33 * 1.5)));
-                rightIntake.setPosition(Math.abs(0.33 - (0.33 * 1.5)));
-                leftVacuum.setPower(1);
-                rightVacuum.setPower(1);
-                intakeMotor.setPower(1);
-                leftPinch.setPosition(0.3);
-                rightPinch.setPosition(0.3);
-            } else if (ht.gamepad2.dpad_left) { // 4TH PIXEL STACK //
-                leftIntake.setPosition(Math.abs(0.33 - (0.33 * 2)));
-                rightIntake.setPosition(Math.abs(0.33 - (0.33 * 2)));
-                leftVacuum.setPower(1);
-                rightVacuum.setPower(1);
-                intakeMotor.setPower(1);
-                leftPinch.setPosition(0.3);
-                rightPinch.setPosition(0.3);
-            } else if (ht.gamepad2.dpad_up) { // 5TH PIXEL STACK //
-                leftIntake.setPosition(Math.abs(0.33 - (0.33 * 2.5)));
-                rightIntake.setPosition(Math.abs(0.33 - (0.33 * 2.5)));
-                leftVacuum.setPower(1);
-                rightVacuum.setPower(1);
-                intakeMotor.setPower(1);
-                leftPinch.setPosition(0.3);
-                rightPinch.setPosition(0.3);
-            } else if (ht.gamepad1.b) { // PIXEL OUT //
-                intakeMotor.setPower(-1);
-            }
+//
+//            if (ht.gamepad1.right_trigger != 0) {
+//                leftIntake.setPosition(0.37);
+//                rightIntake.setPosition(0.37);
+//                intakeMotor.setPower(1);
+//                leftPinch.setPosition(0.3);
+//                rightPinch.setPosition(0.3);
+//            } else if (ht.gamepad2.dpad_down) { // 2 PIXEL STACK //
+//                leftIntake.setPosition(0.33);
+//                rightIntake.setPosition(0.33);
+//                leftVacuum.setPower(1);
+//                rightVacuum.setPower(1);
+//                intakeMotor.setPower(1);
+//                leftPinch.setPosition(0.3);
+//                rightPinch.setPosition(0.3);
+//            } else if (ht.gamepad2.dpad_right) { // 3 PIXEL STACK //
+//                leftIntake.setPosition(Math.abs(0.33 - (0.33 * 1.5)));
+//                rightIntake.setPosition(Math.abs(0.33 - (0.33 * 1.5)));
+//                leftVacuum.setPower(1);
+//                rightVacuum.setPower(1);
+//                intakeMotor.setPower(1);
+//                leftPinch.setPosition(0.3);
+//                rightPinch.setPosition(0.3);
+//            } else if (ht.gamepad2.dpad_left) { // 4TH PIXEL STACK //
+//                leftIntake.setPosition(Math.abs(0.33 - (0.33 * 2)));
+//                rightIntake.setPosition(Math.abs(0.33 - (0.33 * 2)));
+//                leftVacuum.setPower(1);
+//                rightVacuum.setPower(1);
+//                intakeMotor.setPower(1);
+//                leftPinch.setPosition(0.3);
+//                rightPinch.setPosition(0.3);
+//            } else if (ht.gamepad2.dpad_up) { // 5TH PIXEL STACK //
+//                leftIntake.setPosition(Math.abs(0.33 - (0.33 * 2.5)));
+//                rightIntake.setPosition(Math.abs(0.33 - (0.33 * 2.5)));
+//                leftVacuum.setPower(1);
+//                rightVacuum.setPower(1);
+//                intakeMotor.setPower(1);
+//                leftPinch.setPosition(0.3);
+//                rightPinch.setPosition(0.3);
+//            } else if (ht.gamepad1.right_bumper) { // PIXEL OUT //
+//                intakeMotor.setPower(-1);
+//            }
 
             ///// GAMEPAD 2 /////
 
             if (ht.gamepad2.a) { // BACKDROP LINE 1 //
+
                 leftLift.getCurrentPosition();
                 rightLift.getCurrentPosition();
                 leftLift.setTargetPosition(drop_one);
@@ -263,6 +264,38 @@ public class Robot {
                 rightLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 leftLift.setPower(liftPower);
                 rightLift.setPower(liftPower);
+
+                try {
+                    Thread.sleep(650);  // Adjust the delay duration (in milliseconds)
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                rightPinch.setPosition(0.3);
+                leftPinch.setPosition(0.3);
+
+                try {
+                    Thread.sleep(650);  // Adjust the delay duration (in milliseconds)
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                armMotor.setTargetPosition(-472);
+                armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                armMotor.setPower(1);
+
+                // Wait for the motor to reach the target position
+                while (armMotor.isBusy()) {
+                    rightPinch.setPosition(0.3);
+                    leftPinch.setPosition(0.3);
+                }
+
+                // Adjust servo positions after the motor reaches the target position
+                rightPinch.setPosition(0.3);
+                leftPinch.setPosition(0.3);
+                outtakeRotate.setPosition(0.35);
+                outtakeWrist.setPosition(0.05);
+
                 ht.telemetry.addLine("Lifting to Backdrop Line 1");
                 ht.telemetry.update();
             } else if (ht.gamepad2.x) { // BACKDROP LINE 2 //
@@ -301,54 +334,7 @@ public class Robot {
                 ht.telemetry.update();
             }
 
-            // OUTTAKE //
 
-            if (ht.gamepad2.left_bumper) {
-                outtakeRotate.setPosition(0);
-
-            } else if (ht.gamepad2.right_bumper) {
-                outtakeRotate.setPosition(0.3);
-
-            } else if (ht.gamepad2.right_stick_button) {
-                outtakeWrist.setPosition(0);
-
-            } else if (ht.gamepad2.left_stick_button) {
-                outtakeWrist.setPosition(0.3);
-
-            }
-
-            // FINAL OUTTAKE //
-
-            /*if (ht.gamepad2.left_bumper) { // OUTTAKE IN
-                outtakeRotate.setPosition(0);
-                armMotor.getCurrentPosition();
-                armMotor.setTargetPosition(100);
-                armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                armMotor.setPower(1);
-                outtakeWrist.setPosition(0.3);
-
-
-            } else if (ht.gamepad2.right_bumper) {
-                outtakeRotate.setPosition(0.3);
-
-            } else if (ht.gamepad2.right_stick_button) {
-                outtakeWrist.setPosition(0);
-
-            } else if (ht.gamepad2.left_stick_button) {
-                outtakeWrist.setPosition(0.3);
-
-            }*/
-
-            // SERVO PINCH //
-
-            if (ht.gamepad2.right_trigger != 0) { // OPEN LEFT //
-                leftPinch.setPosition(0.3);
-            } else if (ht.gamepad2.left_trigger != 0) { // OPEN RIGHT //
-                rightPinch.setPosition(0.3);
-            } else { // CLOSED //
-                leftPinch.setPosition(0.2);
-                rightPinch.setPosition(0.2);
-            }
 
             // TELEMETRY
 
@@ -367,12 +353,12 @@ public class Robot {
             ht.telemetry.addLine("Intaking...");
             ht.telemetry.update();
 
-            if (ht.gamepad1.right_trigger > 0) {
+            if (ht.gamepad1.right_bumper) {
                 intakeMotor.setPower(0.5);
-            } else if (ht.gamepad1.left_trigger > 0) {
+            } else if (ht.gamepad1.right_trigger > 0) {
                 intakeMotor.setPower(-1);
-            } else {
-                intakeMotor.setPower(0);
+                rightPinch.setPosition(0.2);
+                leftPinch.setPosition(0.2);
             }
         }
 
@@ -392,8 +378,353 @@ public class Robot {
 
         // (STRAFE) NEGATIVE DIRECTION ==
         public void autontest () {
-            forward(0.5,1);
+            if (ht.gamepad1.b) {
+                caclaw.setPosition(0.3);
+            } else {
+                caclaw.setPosition(0);
+            }
         }
+
+        public void elevenpointclose () {
+            caclaw.setPosition(0.3);
+
+            try {
+                Thread.sleep(1000);  // Adjust the delay duration (in milliseconds)
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            littlebackwards();
+            caclaw.setPosition(0);
+
+            try {
+                Thread.sleep(1000);  // Adjust the delay duration (in milliseconds)
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            littleforward();
+            strafe(0.5,1,-1);
+            autonscore();
+
+            frontLeftMotor.setPower(0);
+            backRightMotor.setPower(0);
+            frontRightMotor.setPower(0);
+            backLeftMotor.setPower(0);
+            sleep(30000);
+//            strafe(0.5,1,1);
+
+//            stopDriveMotors();
+//            halfforward(0.25);
+//            strafe(0.5,1,-1);
+//            strafehalf(0.25,-1);
+        }
+
+    public void park () {
+        strafe(.5,2,-1);
+    }
+    public void elevenpointcloseblue () {
+        caclaw.setPosition(0.3);
+
+        try {
+            Thread.sleep(1000);  // Adjust the delay duration (in milliseconds)
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        littlebackwards();
+        caclaw.setPosition(0);
+
+        try {
+            Thread.sleep(1000);  // Adjust the delay duration (in milliseconds)
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        bruhforward();
+        littlestrafe();
+        turn_half_other();
+//        autonscore();
+//
+//        frontLeftMotor.setPower(0);
+//        backRightMotor.setPower(0);
+//        frontRightMotor.setPower(0);
+//        backLeftMotor.setPower(0);
+//        sleep(30000);
+//            strafe(0.5,1,1);
+
+//            stopDriveMotors();
+//            halfforward(0.25);
+//            strafe(0.5,1,-1);
+//            strafehalf(0.25,-1);
+    }
+
+    public void elevenpointfar () {
+        caclaw.setPosition(0.3);
+
+        try {
+            Thread.sleep(1000);  // Adjust the delay duration (in milliseconds)
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        littlebackwards();
+        caclaw.setPosition(0);
+
+        try {
+            Thread.sleep(1000);  // Adjust the delay duration (in milliseconds)
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        littleforward();
+        littlestrafe();
+        bruhbackwards();
+        bruhbackwards();
+        bruhstrafe();
+        turn_half();
+        blittlestrafe();
+        autonscore();
+
+
+        frontLeftMotor.setPower(0);
+        backRightMotor.setPower(0);
+        frontRightMotor.setPower(0);
+        backLeftMotor.setPower(0);
+        sleep(30000);
+//            strafe(0.5,1,1);
+
+//            stopDriveMotors();
+//            halfforward(0.25);
+//            strafe(0.5,1,-1);
+//            strafehalf(0.25,-1);
+    }
+
+    public void straferight (){
+
+        backRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        backLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        frontRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        frontLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        backRightMotor.setTargetPosition(-450);
+        backLeftMotor.setTargetPosition(-450);
+        frontRightMotor.setTargetPosition(450);
+        frontLeftMotor.setTargetPosition(450);
+
+        backRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        backLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        frontRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        frontLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        backRightMotor.setPower(0.5);
+        backLeftMotor.setPower(0.5);
+        frontRightMotor.setPower(0.5);
+        frontLeftMotor.setPower(0.5);
+
+        while (backRightMotor.isBusy()) {
+            ht.telemetry.addData("leftFront", frontLeftMotor.getCurrentPosition());
+            ht.telemetry.addData("rightFront", frontRightMotor.getCurrentPosition());
+            ht.telemetry.addData("leftBack", backLeftMotor.getCurrentPosition());
+            ht.telemetry.addData("rightBack", backRightMotor.getCurrentPosition());
+            ht.telemetry.update();
+            sleep(50);  // Adjust sleep duration as needed
+        }
+
+        // Stop the motors
+        backRightMotor.setPower(0);
+        backLeftMotor.setPower(0);
+        frontRightMotor.setPower(0);
+        frontLeftMotor.setPower(0);
+    }
+
+    public void bruhstrafe(){
+        backRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        backLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        frontRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        frontLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        backRightMotor.setTargetPosition(-3350);
+        backLeftMotor.setTargetPosition(-3350);
+        frontRightMotor.setTargetPosition(3350);
+        frontLeftMotor.setTargetPosition(3350);
+
+        backRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        backLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        frontRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        frontLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        backRightMotor.setPower(0.5);
+        backLeftMotor.setPower(0.5);
+        frontRightMotor.setPower(0.5);
+        frontLeftMotor.setPower(0.5);
+
+        while (backRightMotor.isBusy()) {
+            ht.telemetry.addData("leftFront", frontLeftMotor.getCurrentPosition());
+            ht.telemetry.addData("rightFront", frontRightMotor.getCurrentPosition());
+            ht.telemetry.addData("leftBack", backLeftMotor.getCurrentPosition());
+            ht.telemetry.addData("rightBack", backRightMotor.getCurrentPosition());
+            ht.telemetry.update();
+            sleep(50);  // Adjust sleep duration as needed
+        }
+
+        // Stop the motors
+        backRightMotor.setPower(0);
+        backLeftMotor.setPower(0);
+        frontRightMotor.setPower(0);
+        frontLeftMotor.setPower(0);
+    }
+
+    public void blittlestrafe (){
+
+        backRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        backLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        frontRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        frontLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        backRightMotor.setTargetPosition(-600);
+        backLeftMotor.setTargetPosition(-600);
+        frontRightMotor.setTargetPosition(600);
+        frontLeftMotor.setTargetPosition(600);
+
+        backRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        backLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        frontRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        frontLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        backRightMotor.setPower(0.5);
+        backLeftMotor.setPower(0.5);
+        frontRightMotor.setPower(0.5);
+        frontLeftMotor.setPower(0.5);
+
+        while (backRightMotor.isBusy()) {
+            ht.telemetry.addData("leftFront", frontLeftMotor.getCurrentPosition());
+            ht.telemetry.addData("rightFront", frontRightMotor.getCurrentPosition());
+            ht.telemetry.addData("leftBack", backLeftMotor.getCurrentPosition());
+            ht.telemetry.addData("rightBack", backRightMotor.getCurrentPosition());
+            ht.telemetry.update();
+            sleep(50);  // Adjust sleep duration as needed
+        }
+
+        // Stop the motors
+        backRightMotor.setPower(0);
+        backLeftMotor.setPower(0);
+        frontRightMotor.setPower(0);
+        frontLeftMotor.setPower(0);
+    }
+
+    public void littlestrafe (){
+
+        backRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        backLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        frontRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        frontLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        backRightMotor.setTargetPosition(600);
+        backLeftMotor.setTargetPosition(600);
+        frontRightMotor.setTargetPosition(-600);
+        frontLeftMotor.setTargetPosition(-600);
+
+        backRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        backLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        frontRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        frontLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        backRightMotor.setPower(0.5);
+        backLeftMotor.setPower(0.5);
+        frontRightMotor.setPower(0.5);
+        frontLeftMotor.setPower(0.5);
+
+        while (backRightMotor.isBusy()) {
+            ht.telemetry.addData("leftFront", frontLeftMotor.getCurrentPosition());
+            ht.telemetry.addData("rightFront", frontRightMotor.getCurrentPosition());
+            ht.telemetry.addData("leftBack", backLeftMotor.getCurrentPosition());
+            ht.telemetry.addData("rightBack", backRightMotor.getCurrentPosition());
+            ht.telemetry.update();
+            sleep(50);  // Adjust sleep duration as needed
+        }
+
+        // Stop the motors
+        backRightMotor.setPower(0);
+        backLeftMotor.setPower(0);
+        frontRightMotor.setPower(0);
+        frontLeftMotor.setPower(0);
+    }
+        public void turn_half (){
+
+            backRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            backLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            frontRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            frontLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+            backRightMotor.setTargetPosition(-765);
+            backLeftMotor.setTargetPosition(765);
+            frontRightMotor.setTargetPosition(-765);
+            frontLeftMotor.setTargetPosition(765);
+
+            backRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            backLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            frontRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            frontLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+            backRightMotor.setPower(0.5);
+            backLeftMotor.setPower(0.5);
+            frontRightMotor.setPower(0.5);
+            frontLeftMotor.setPower(0.5);
+
+            while (backRightMotor.isBusy()) {
+                ht.telemetry.addData("leftFront", frontLeftMotor.getCurrentPosition());
+                ht.telemetry.addData("rightFront", frontRightMotor.getCurrentPosition());
+                ht.telemetry.addData("leftBack", backLeftMotor.getCurrentPosition());
+                ht.telemetry.addData("rightBack", backRightMotor.getCurrentPosition());
+                ht.telemetry.update();
+                sleep(50);  // Adjust sleep duration as needed
+            }
+
+            // Stop the motors
+            backRightMotor.setPower(0);
+            backLeftMotor.setPower(0);
+            frontRightMotor.setPower(0);
+            frontLeftMotor.setPower(0);
+        }
+
+    public void turn_half_other (){
+
+        backRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        backLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        frontRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        frontLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        backRightMotor.setTargetPosition(765);
+        backLeftMotor.setTargetPosition(-765);
+        frontRightMotor.setTargetPosition(765);
+        frontLeftMotor.setTargetPosition(-765);
+
+        backRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        backLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        frontRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        frontLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        backRightMotor.setPower(0.5);
+        backLeftMotor.setPower(0.5);
+        frontRightMotor.setPower(0.5);
+        frontLeftMotor.setPower(0.5);
+
+        while (backRightMotor.isBusy()) {
+            ht.telemetry.addData("leftFront", frontLeftMotor.getCurrentPosition());
+            ht.telemetry.addData("rightFront", frontRightMotor.getCurrentPosition());
+            ht.telemetry.addData("leftBack", backLeftMotor.getCurrentPosition());
+            ht.telemetry.addData("rightBack", backRightMotor.getCurrentPosition());
+            ht.telemetry.update();
+            sleep(50);  // Adjust sleep duration as needed
+        }
+
+        // Stop the motors
+        backRightMotor.setPower(0);
+        backLeftMotor.setPower(0);
+        frontRightMotor.setPower(0);
+        frontLeftMotor.setPower(0);
+    }
         public void test () {
 
         // TEST LATER
@@ -432,25 +763,43 @@ public class Robot {
 
         // ENCODER MOVEMENT DO NOT TOUCH!
 
+        public void autonscore() {
+            rightPinch.setPosition(0.3);
+            leftPinch.setPosition(0.3);
+
+            try {
+                Thread.sleep(650);  // Adjust the delay duration (in milliseconds)
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            armMotor.setTargetPosition(-472);
+            armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            armMotor.setPower(1);
+
+            // Wait for the motor to reach the target position
+            while (armMotor.isBusy()) {
+                rightPinch.setPosition(0.3);
+                leftPinch.setPosition(0.3);
+                frontLeftMotor.setPower(0);
+                backLeftMotor.setPower(0);
+                frontRightMotor.setPower(0);
+                backRightMotor.setPower(0);
+            }
+
+            // Adjust servo positions after the motor reaches the target position
+            rightPinch.setPosition(0.3);
+            leftPinch.setPosition(0.3);
+            outtakeRotate.setPosition(0);
+            outtakeWrist.setPosition(0.05);
+        }
         public void score() {
 
 // COPY & PASTE Angel's Code Here!
-            if (ht.gamepad2.y) {
+            if (ht.gamepad2.dpad_up) {
 
-                    rightPinch.setPosition(0.3);
-                    leftPinch.setPosition(0.3);
-
-                    if (ht.gamepad2.left_bumper) {
-                        rightPinch.setPosition(0.2);
-                        leftPinch.setPosition(0.2);
-                    } else if (ht.gamepad2.right_trigger > 0) {
-                        rightPinch.setPosition(0.2);
-                    } else if (ht.gamepad2.left_trigger > 0) {
-                        leftPinch.setPosition(0.2);
-                    } else {
-                        rightPinch.setPosition(0.3);
-                        leftPinch.setPosition(0.3);
-                    }
+                    rightPinch.setPosition(0.2);
+                    leftPinch.setPosition(0.2);
 
                     try {
                         Thread.sleep(650);  // Adjust the delay duration (in milliseconds)
@@ -464,16 +813,54 @@ public class Robot {
 
                     // Wait for the motor to reach the target position
                     while (armMotor.isBusy()) {
-                        ht.idle();
+                        rightPinch.setPosition(0.2);
+                        leftPinch.setPosition(0.2);
                     }
 
                     // Adjust servo positions after the motor reaches the target position
+                    rightPinch.setPosition(0.2);
+                    leftPinch.setPosition(0.2);
                     outtakeRotate.setPosition(0.35);
                     outtakeWrist.setPosition(0.05);
+            } else if (ht.gamepad2.dpad_down){
+                stopDriveMotors();
 
-                    if (ht.gamepad2.right_bumper) {
-                        outtakeRotate.setPosition(0);
-                    }
+                // Run the outtake sequence
+                outtakeRotate.setPosition(0.015);
+                outtakeWrist.setPosition(0.8);
+                rightPinch.setPosition(0.2);
+                leftPinch.setPosition(0.2);
+
+                try {
+                    Thread.sleep(1000);  // Adjust the delay duration (in milliseconds)
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                armMotor.setTargetPosition(0);
+                armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                armMotor.setPower(0.3);
+
+                while (armMotor.isBusy()) {
+                    rightPinch.setPosition(0.2);
+                    leftPinch.setPosition(0.2);
+                }
+
+                // Stop the drive motors again after the sequence is completed
+                stopDriveMotors();
+
+            } else if (ht.gamepad2.left_bumper) {
+                rightPinch.setPosition(0.2);
+                leftPinch.setPosition(0.2);
+            } else if (ht.gamepad2.right_trigger > 0) {
+                rightPinch.setPosition(0.2);
+            } else if (ht.gamepad2.left_trigger > 0) {
+                leftPinch.setPosition(0.2);
+            } else if (ht.gamepad2.right_bumper) {
+                outtakeRotate.setPosition(0.03);
+            } else {
+                rightPinch.setPosition(0.3);
+                leftPinch.setPosition(0.3);
 
             }
 //            else if (ht.gamepad2.b) {
@@ -530,34 +917,192 @@ public class Robot {
 //                }
 //                // Add any additional actions or adjustments here
 //            }
-            else {
-                outtakeRotate.setPosition(0);
-                outtakeWrist.setPosition(0.789);
-                rightPinch.setPosition(0.2);
-                leftPinch.setPosition(0.2);
-
-                try {
-                    Thread.sleep(1000);  // Adjust the delay duration (in milliseconds)
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
-                armMotor.setTargetPosition(0);
-                armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                armMotor.setPower(0.3);
-            }
+//            if (ht.gamepad2.left_bumper) {
+//                rightPinch.setPosition(0.2);
+//                leftPinch.setPosition(0.2);
+//            } else if (ht.gamepad2.right_trigger > 0) {
+//                rightPinch.setPosition(0.2);
+//            } else if (ht.gamepad2.left_trigger > 0) {
+//                leftPinch.setPosition(0.2);
+//            } else {
+//                rightPinch.setPosition(0.3);
+//                leftPinch.setPosition(0.3);
+//            }
         }
 
+        public void stopDriveMotors() {
+            // Stop the drive motors
+            // Assuming driveMotor1 and driveMotor2 are your drive motors
+            backLeftMotor.setPower(0);
+            frontRightMotor.setPower(0);
+            frontLeftMotor.setPower(0);
+            backRightMotor.setPower(0);
+// Add other drive motors if needed
+        }
 
         public void retract() {
             // COPY & PASTE Angel's Code Here!
         }
-        public void forward(double pw, int num_tiles) {
+
+    public void bruhbackwards (){
+
+        backRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        backLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        frontRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        frontLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        backRightMotor.setTargetPosition(-720);
+        backLeftMotor.setTargetPosition(-720);
+        frontRightMotor.setTargetPosition(-720);
+        frontLeftMotor.setTargetPosition(-720);
+
+        backRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        backLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        frontRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        frontLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        backRightMotor.setPower(0.5);
+        backLeftMotor.setPower(0.5);
+        frontRightMotor.setPower(0.5);
+        frontLeftMotor.setPower(0.5);
+
+        while (backRightMotor.isBusy()) {
+            ht.telemetry.addData("leftFront", frontLeftMotor.getCurrentPosition());
+            ht.telemetry.addData("rightFront", frontRightMotor.getCurrentPosition());
+            ht.telemetry.addData("leftBack", backLeftMotor.getCurrentPosition());
+            ht.telemetry.addData("rightBack", backRightMotor.getCurrentPosition());
+            ht.telemetry.update();
+            sleep(50);  // Adjust sleep duration as needed
+        }
+
+        // Stop the motors
+        backRightMotor.setPower(0);
+        backLeftMotor.setPower(0);
+        frontRightMotor.setPower(0);
+        frontLeftMotor.setPower(0);
+
+    }
+    public void littlebackwards (){
+
+        backRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        backLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        frontRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        frontLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        backRightMotor.setTargetPosition(-920);
+        backLeftMotor.setTargetPosition(-920);
+        frontRightMotor.setTargetPosition(-920);
+        frontLeftMotor.setTargetPosition(-920);
+
+        backRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        backLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        frontRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        frontLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        backRightMotor.setPower(0.5);
+        backLeftMotor.setPower(0.5);
+        frontRightMotor.setPower(0.5);
+        frontLeftMotor.setPower(0.5);
+
+        while (backRightMotor.isBusy()) {
+            ht.telemetry.addData("leftFront", frontLeftMotor.getCurrentPosition());
+            ht.telemetry.addData("rightFront", frontRightMotor.getCurrentPosition());
+            ht.telemetry.addData("leftBack", backLeftMotor.getCurrentPosition());
+            ht.telemetry.addData("rightBack", backRightMotor.getCurrentPosition());
+            ht.telemetry.update();
+            sleep(50);  // Adjust sleep duration as needed
+        }
+
+        // Stop the motors
+        backRightMotor.setPower(0);
+        backLeftMotor.setPower(0);
+        frontRightMotor.setPower(0);
+        frontLeftMotor.setPower(0);
+
+    }
+        public void littleforward (){
+
+            backRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            backLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            frontRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            frontLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+            backRightMotor.setTargetPosition(200);
+            backLeftMotor.setTargetPosition(200);
+            frontRightMotor.setTargetPosition(200);
+            frontLeftMotor.setTargetPosition(200);
+
+            backRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            backLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            frontRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            frontLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+            backRightMotor.setPower(0.5);
+            backLeftMotor.setPower(0.5);
+            frontRightMotor.setPower(0.5);
+            frontLeftMotor.setPower(0.5);
+
+            while (backRightMotor.isBusy()) {
+                ht.telemetry.addData("leftFront", frontLeftMotor.getCurrentPosition());
+                ht.telemetry.addData("rightFront", frontRightMotor.getCurrentPosition());
+                ht.telemetry.addData("leftBack", backLeftMotor.getCurrentPosition());
+                ht.telemetry.addData("rightBack", backRightMotor.getCurrentPosition());
+                ht.telemetry.update();
+                sleep(50);  // Adjust sleep duration as needed
+            }
+
+            // Stop the motors
+            backRightMotor.setPower(0);
+            backLeftMotor.setPower(0);
+            frontRightMotor.setPower(0);
+            frontLeftMotor.setPower(0);
+
+        }
+
+    public void bruhforward (){
+
+        backRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        backLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        frontRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        frontLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        backRightMotor.setTargetPosition(300);
+        backLeftMotor.setTargetPosition(300);
+        frontRightMotor.setTargetPosition(300);
+        frontLeftMotor.setTargetPosition(300);
+
+        backRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        backLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        frontRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        frontLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        backRightMotor.setPower(0.5);
+        backLeftMotor.setPower(0.5);
+        frontRightMotor.setPower(0.5);
+        frontLeftMotor.setPower(0.5);
+
+        while (backRightMotor.isBusy()) {
+            ht.telemetry.addData("leftFront", frontLeftMotor.getCurrentPosition());
+            ht.telemetry.addData("rightFront", frontRightMotor.getCurrentPosition());
+            ht.telemetry.addData("leftBack", backLeftMotor.getCurrentPosition());
+            ht.telemetry.addData("rightBack", backRightMotor.getCurrentPosition());
+            ht.telemetry.update();
+            sleep(50);  // Adjust sleep duration as needed
+        }
+
+        // Stop the motors
+        backRightMotor.setPower(0);
+        backLeftMotor.setPower(0);
+        frontRightMotor.setPower(0);
+        frontLeftMotor.setPower(0);
+
+    }
+        public void forward(double pw, double num_tiles) {
             int CPR = 385;
             int diameter = 96; // Replace with your wheel/spool's diameter
             int circumference = 302;
-            int tile_size = 619;
-            int finalpos = num_tiles * tile_size;
+            int tile_size = 620;
+            int finalpos = (int) (num_tiles * tile_size);
             int overticks = finalpos / circumference;
             int targetpos = (overticks * CPR);
 
@@ -662,12 +1207,12 @@ public class Robot {
         ht.telemetry.addData("rightBack", backRightMotor.getCurrentPosition());
         ht.telemetry.update();
     }
-    public void backward(double pw, int num_tiles) {
+    public void backward(double pw, double num_tiles) {
         int CPR = 385;
         int diameter = 96; // Replace with your wheel/spool's diameter
         int circumference = 302;
-        int tile_size = 619;
-        int finalpos = num_tiles * tile_size;
+        int tile_size = 620;
+        int finalpos = (int) (num_tiles * tile_size);
         int overticks = finalpos / circumference;
         int targetpos = (overticks * CPR);
 
@@ -679,6 +1224,11 @@ public class Robot {
         double angleNormalized = angle % 360;
 
         double distance = circumference * revolutions;
+
+        backRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        backLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        frontRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        frontLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         backRightMotor.setTargetPosition(-targetpos);
         backLeftMotor.setTargetPosition(-targetpos);
@@ -772,6 +1322,60 @@ public class Robot {
         ht.telemetry.addData("rightBack", backRightMotor.getCurrentPosition());
         ht.telemetry.update();
     }
+        public void quarterbackwards(double pw) {
+            int CPR = 385;
+            int diameter = 96; // Replace with your wheel/spool's diameter
+            int circumference = 302;
+            int tile_size = 155;
+            int overticks = tile_size / circumference;
+            int targetpos = (overticks * CPR);
+
+            // Get the current position of the motor
+            int position = backRightMotor.getCurrentPosition();
+            double revolutions = position / CPR;
+
+            double angle = revolutions * 360;
+            double angleNormalized = angle % 360;
+
+            double distance = circumference * revolutions;
+
+            backRightMotor.setTargetPosition(-targetpos);
+            backLeftMotor.setTargetPosition(-targetpos);
+            frontRightMotor.setTargetPosition(-targetpos);
+            frontLeftMotor.setTargetPosition(-targetpos);
+
+            backRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            backLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            frontRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            frontLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+            backRightMotor.setPower(pw);
+            backLeftMotor.setPower(pw);
+            frontRightMotor.setPower(pw);
+            frontLeftMotor.setPower(pw);
+
+            while (backRightMotor.isBusy()) {
+                ht.telemetry.addData("leftFront", frontLeftMotor.getCurrentPosition());
+                ht.telemetry.addData("rightFront", frontRightMotor.getCurrentPosition());
+                ht.telemetry.addData("leftBack", backLeftMotor.getCurrentPosition());
+                ht.telemetry.addData("rightBack", backRightMotor.getCurrentPosition());
+                ht.telemetry.update();
+                sleep(50);  // Adjust sleep duration as needed
+            }
+        // Stop the motors
+        backRightMotor.setPower(0);
+        backLeftMotor.setPower(0);
+        frontRightMotor.setPower(0);
+        frontLeftMotor.setPower(0);
+
+        // Update telemetry with final positions
+        ht.telemetry.addData("leftFront", frontLeftMotor.getCurrentPosition());
+        ht.telemetry.addData("rightFront", frontRightMotor.getCurrentPosition());
+        ht.telemetry.addData("leftBack", backLeftMotor.getCurrentPosition());
+        ht.telemetry.addData("rightBack", backRightMotor.getCurrentPosition());
+        ht.telemetry.update();
+    }
+
     public void strafe(double pw, int num_tiles, int dir) {
         int CPR = 385;
         int diameter = 96; // Replace with your wheel/spool's diameter
@@ -790,9 +1394,9 @@ public class Robot {
 
         double distance = circumference * revolutions;
 
-        backRightMotor.setTargetPosition(dir * targetpos);
+        backRightMotor.setTargetPosition(targetpos);
         backLeftMotor.setTargetPosition(targetpos);
-        frontRightMotor.setTargetPosition(targetpos);
+        frontRightMotor.setTargetPosition(dir * targetpos);
         frontLeftMotor.setTargetPosition(dir * targetpos);
 
         backRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -845,9 +1449,9 @@ public class Robot {
 
         double distance = circumference * revolutions;
 
-        backRightMotor.setTargetPosition(dir * targetpos);
-        backLeftMotor.setTargetPosition(targetpos);
-        frontRightMotor.setTargetPosition(targetpos);
+        backRightMotor.setTargetPosition(-dir *targetpos);
+        backLeftMotor.setTargetPosition(-dir * targetpos);
+        frontRightMotor.setTargetPosition(dir * targetpos);
         frontLeftMotor.setTargetPosition(dir * targetpos);
 
         backRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
