@@ -26,8 +26,7 @@ build/
 
 # TeamCode
 
-.TeamCode/
-build/
+TeamCode/build/
 
 # Local configuration file (sdk path, etc)
 local.properties
