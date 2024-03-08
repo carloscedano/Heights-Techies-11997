@@ -58,8 +58,7 @@ captures/
 
 # Google Services (e.g. APIs or Firebase)
 # google-services.json
-
-*.build/intermediates/assets
+.TeamCode/build/intermediates/assets
 # Version control
 vcs.xml
 
