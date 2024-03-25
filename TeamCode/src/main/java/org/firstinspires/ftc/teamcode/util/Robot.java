@@ -359,6 +359,8 @@ public class Robot {
                 intakeMotor.setPower(-1);
                 rightPinch.setPosition(0.2);
                 leftPinch.setPosition(0.2);
+            } else {
+                intakeMotor.setPower(0);
             }
         }
 
@@ -797,6 +799,7 @@ public class Robot {
 
 // COPY & PASTE Angel's Code Here!
             if (ht.gamepad2.dpad_up) {
+                stopDriveMotors();
 
                     rightPinch.setPosition(0.2);
                     leftPinch.setPosition(0.2);
@@ -822,6 +825,9 @@ public class Robot {
                     leftPinch.setPosition(0.2);
                     outtakeRotate.setPosition(0.35);
                     outtakeWrist.setPosition(0.05);
+
+                stopDriveMotors();
+
             } else if (ht.gamepad2.dpad_down){
                 stopDriveMotors();
 
