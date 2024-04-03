@@ -179,7 +179,6 @@ public class Robot {
 
 
     }
-
         public void gameplay () {
 
             double liftPower = 0.5;
@@ -350,6 +349,8 @@ public class Robot {
         // INDEPENDENT
         public void intake () {
 
+            rightPinch.setPosition(0.2);
+            leftPinch.setPosition(0.2);
             ht.telemetry.addLine("Intaking...");
             ht.telemetry.update();
 
@@ -361,6 +362,8 @@ public class Robot {
                 leftPinch.setPosition(0.2);
             } else {
                 intakeMotor.setPower(0);
+                rightPinch.setPosition(0.2);
+                leftPinch.setPosition(0.2);
             }
         }
 
@@ -801,8 +804,8 @@ public class Robot {
             if (ht.gamepad2.dpad_up) {
                 stopDriveMotors();
 
-                    rightPinch.setPosition(0.2);
-                    leftPinch.setPosition(0.2);
+                    rightPinch.setPosition(0.3);
+                    leftPinch.setPosition(0.3);
 
                     try {
                         Thread.sleep(650);  // Adjust the delay duration (in milliseconds)
@@ -816,13 +819,13 @@ public class Robot {
 
                     // Wait for the motor to reach the target position
                     while (armMotor.isBusy()) {
-                        rightPinch.setPosition(0.2);
-                        leftPinch.setPosition(0.2);
+                        rightPinch.setPosition(0.3);
+                        leftPinch.setPosition(0.3);
                     }
 
                     // Adjust servo positions after the motor reaches the target position
-                    rightPinch.setPosition(0.2);
-                    leftPinch.setPosition(0.2);
+                    rightPinch.setPosition(0.3);
+                    leftPinch.setPosition(0.3);
                     outtakeRotate.setPosition(0.35);
                     outtakeWrist.setPosition(0.05);
 
@@ -1617,5 +1620,81 @@ public class Robot {
         ht.telemetry.addData("leftBack", backLeftMotor.getCurrentPosition());
         ht.telemetry.addData("rightBack", backRightMotor.getCurrentPosition());
         ht.telemetry.update();
+    }
+
+    public void singleplayer() {
+
+// COPY & PASTE Angel's Code Here!
+        if (ht.gamepad1.dpad_up) {
+            stopDriveMotors();
+
+            rightPinch.setPosition(0.2);
+            leftPinch.setPosition(0.2);
+
+            try {
+                Thread.sleep(650);  // Adjust the delay duration (in milliseconds)
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            armMotor.setTargetPosition(-472);
+            armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            armMotor.setPower(1);
+
+            // Wait for the motor to reach the target position
+            while (armMotor.isBusy()) {
+                rightPinch.setPosition(0.2);
+                leftPinch.setPosition(0.2);
+            }
+
+            // Adjust servo positions after the motor reaches the target position
+            rightPinch.setPosition(0.2);
+            leftPinch.setPosition(0.2);
+            outtakeRotate.setPosition(0.35);
+            outtakeWrist.setPosition(0.05);
+
+            stopDriveMotors();
+
+        } else if (ht.gamepad1.dpad_down) {
+            stopDriveMotors();
+
+            // Run the outtake sequence
+            outtakeRotate.setPosition(0.015);
+            outtakeWrist.setPosition(0.8);
+            rightPinch.setPosition(0.2);
+            leftPinch.setPosition(0.2);
+
+            try {
+                Thread.sleep(1000);  // Adjust the delay duration (in milliseconds)
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            armMotor.setTargetPosition(0);
+            armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            armMotor.setPower(0.3);
+
+            while (armMotor.isBusy()) {
+                rightPinch.setPosition(0.2);
+                leftPinch.setPosition(0.2);
+            }
+
+            // Stop the drive motors again after the sequence is completed
+            stopDriveMotors();
+
+        } else if (ht.gamepad2.left_bumper) {
+            rightPinch.setPosition(0.2);
+            leftPinch.setPosition(0.2);
+        } else if (ht.gamepad2.right_trigger > 0) {
+            rightPinch.setPosition(0.2);
+        } else if (ht.gamepad2.left_trigger > 0) {
+            leftPinch.setPosition(0.2);
+        } else if (ht.gamepad2.right_bumper) {
+            outtakeRotate.setPosition(0.03);
+        } else {
+            rightPinch.setPosition(0.3);
+            leftPinch.setPosition(0.3);
+
+        }
     }
 }
